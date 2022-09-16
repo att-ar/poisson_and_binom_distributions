@@ -21,9 +21,11 @@ def display_pois(func, x, method):
     x_dis = np.arange(func.ppf(0.0001),
                       func.ppf(0.999))
 
+    color = ["other"] * len(x_dis)
+    color[int(x - min(x_dis))] = "wanted"
+
     if method != "P(X=x)":
         y_dis = func.cdf(x_dis)
-        color = ["other"] * len(x_dis)
 
         if method == "P(X≥x)":
             color[:int(x - min(x_dis) + 1)] = ["wanted"] * \
@@ -47,12 +49,10 @@ def display_pois(func, x, method):
 
     # probability mass function:
     y_pmf = func.pmf(x_dis)
-    color_pmf = ["other"] * len(x_dis)
-    color_pmf[int(x - min(x_dis))] = "wanted"
     pmf_plot = DataFrame(data={
         "x": x_dis,
         "P(x)": y_pmf,
-        "color": color_pmf})
+        "color": color})
     pmf_run = px.bar(pmf_plot, "x", "P(x)",
                      color="color",
                      color_discrete_map={
@@ -63,7 +63,48 @@ def display_pois(func, x, method):
     st.plotly_chart(pmf_run)
 
 
-def display_bin(func, x, p, method):
+def display_bin(func, x, method):
+    x_dis = np.arange(func.ppf(0.0001),
+                      func.ppf(0.999))
+    color = ["other"] * len(x_dis)
+    color[int(x - min(x_dis))] = "wanted"
+
+    if method != "P(X=x)":
+        y_dis = func.cdf(x_dis)
+
+        if method == "P(X≥x)":
+            color[:int(x - min(x_dis) + 1)] = ["wanted"] * \
+                int(x - min(x_dis) + 1)
+        else:
+            color[int(x - min(x_dis)):] = ["wanted"] * \
+                int(len(x_dis) - x + min(x_dis))
+
+        df_plot = DataFrame(data={"x": x_dis,
+                                  "P(x)": y_dis,
+                                  "color": color})
+        run = px.bar(df_plot, "x", "P(x)",
+                     color="color",
+                     color_discrete_map={
+                         "wanted": "orange",
+                         "other": "blue"},
+                     title="Binomial Cumulative Distribution Function: orange -> wanted x-values")
+        run.update_layout(xaxis=dict(tickmode="linear"))
+        st.plotly_chart(run)
+
+    # probability mass function:
+    y_pmf = func.pmf(x_dis)
+    pmf_plot = DataFrame(data={
+        "x": x_dis,
+        "P(x)": y_pmf,
+        "color": color})
+    pmf_run = px.bar(pmf_plot, "x", "P(x)",
+                     color="color",
+                     color_discrete_map={
+                         "wanted": "orange",
+                         "other": "blue"},
+                     title="Binomial Probability Mass Function: orange -> wanted x-value")
+    pmf_run.update_layout(xaxis=dict(tickmode="linear"))
+    st.plotly_chart(pmf_run)
 
 
 if distrib[0] == "P":
@@ -88,7 +129,7 @@ if distrib[0] == "P":
 
     # check accuracy of cumulative distrib function and percent point function
     prob = func.cdf(x)
-    np.allclose(x, func.ppf(prob))
+    assert np.allclose(x, func.ppf(prob)), "cdf and ppf are note accurate"
 
     if method == "P(X=x)":
         chance = func.pmf(x)
@@ -97,23 +138,36 @@ if distrib[0] == "P":
     elif method == "P(X≤x)":
         chance = 1 - func.cdf(x-1)
     with cols[1]:
-        st.header(f"{method} = {round(chance, 5)}")
+        st.header(f"{method} = {round(chance, 9)}")
 
 if distrib[0] == "B":
-    x_dis = np.arange(func.ppf(0.0001),
-                  func.ppf(0.999))
+    with cols[0]:
+        n = int(st.number_input(label="n", value=10, min_value=1, step=1))
+        p = float(st.number_input(label="p", value=0.01,
+                  min_value=0.0, max_value=1.0, step=0.001))
+    func = binom(n, p)
+    with cols[0]:
+        x = int(st.number_input(label="x",
+                                value=int(func.ppf(0.0001)),
+                                min_value=int(func.ppf(0.0001)),
+                                max_value=int(func.ppf(0.999) - 1)
+                                )
+                )
+        st.write("x:", x, "n:", n, "p", p)
+    stats = func.stats(moments="mv")
+    st.write(f"Mean: {stats[0]} | Variance: {stats[1]}")
 
-    if method != "P(X=x)":
-        y_dis = func.cdf(x_dis)
-      color = ["other"] * len(x_dis)
+    display_bin(func, x, method)
 
-       if method == "P(X≥x)":
-            color[:int(x - min(x_dis) + 1)] = ["wanted"] * \
-                int(x - min(x_dis) + 1)
-        else:
-            color[int(x - min(x_dis)):] = ["wanted"] * \
-                int(len(x_dis) - x + min(x_dis))
+    # check accuracy of cumulative distrib function and percent point function
+    prob = func.cdf(x)
+    assert np.allclose(x, func.ppf(prob)), "cdf and ppf are note accurate"
 
-        df_plot = DataFrame(data={"x": x_dis,
-                                  "P(x)": y_dis,
-                                  "color": color})
+    if method == "P(X=x)":
+        chance = func.pmf(x)
+    elif method == "P(X≥x)":
+        chance = func.cdf(x)
+    elif method == "P(X≤x)":
+        chance = 1 - func.cdf(x-1)
+    with cols[1]:
+        st.header(f"{method} = {round(chance, 9)}")
