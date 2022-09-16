@@ -149,20 +149,20 @@ if distrib[0] == "P":
         if method != "P(x1≤x≤x2)":
             x = int(st.number_input(label="X",
                                     value=int(func.ppf(0.0001)),
-                                    min_value=int(func.ppf(0.0001)),
-                                    max_value=int(func.ppf(0.999) - 1)
+                                    min_value=int(func.ppf(0.00001)),
+                                    max_value=int(func.ppf(0.99999) - 1)
                                     )
                     )
             st.write("X:", x, "lam:", lambd)
         else:
             x1 = int(st.number_input(label="X1",
                                      value=int(func.ppf(0.0001)),
-                                     min_value=int(func.ppf(0.0001)),
-                                     max_value=int(func.ppf(0.999) - 2)))
+                                     min_value=int(func.ppf(0.00001)),
+                                     max_value=int(func.ppf(0.99999) - 2)))
             x2 = int(st.number_input(label="X2",
-                                     value=int(func.ppf(0.999) - 1),
+                                     value=int(func.ppf(0.9999) - 1),
                                      min_value=x1,
-                                     max_value=int(func.ppf(0.999) - 1)))
+                                     max_value=int(func.ppf(0.99999) - 1)))
             st.write("X1:", x1, "X2:", x2, "lam", lambd)
 
     stats = func.stats(moments="mv")
@@ -201,20 +201,20 @@ if distrib[0] == "B":
         if method != "P(x1≤x≤x2)":
             x = int(st.number_input(label="X",
                                     value=int(func.ppf(0.0001)),
-                                    min_value=int(func.ppf(0.0001)),
-                                    max_value=int(func.ppf(0.999) - 1)
+                                    min_value=int(func.ppf(0.00001)),
+                                    max_value=int(func.ppf(0.99999) - 1)
                                     )
                     )
             st.write("X:", x, "n:", n, "p:", p)
         else:
             x1 = int(st.number_input(label="X1",
                                      value=int(func.ppf(0.0001)),
-                                     min_value=int(func.ppf(0.0001)),
-                                     max_value=int(func.ppf(0.999) - 2)))
+                                     min_value=int(func.ppf(0.00001)),
+                                     max_value=int(func.ppf(0.99999) - 2)))
             x2 = int(st.number_input(label="X2",
                                      value=int(func.ppf(0.999) - 1),
                                      min_value=x1,
-                                     max_value=int(func.ppf(0.999) - 1)))
+                                     max_value=int(func.ppf(0.99999) - 1)))
             st.write("X1:", x1, "X2:", x2, "n:", n, "p", p)
     stats = func.stats(moments="mv")
     st.write(f"Mean: {stats[0]} | Variance: {stats[1]}")
