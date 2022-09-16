@@ -18,8 +18,8 @@ with header:
 
 
 def display_pois(func, method, *args):
-    x_dis = np.arange(func.ppf(0.0001),
-                      func.ppf(0.999))
+    x_dis = np.arange(func.ppf(0.00001),
+                      func.ppf(0.99999))
 
     color = ["other"] * len(x_dis)
     y_dis = func.cdf(x_dis)
@@ -81,8 +81,8 @@ def display_pois(func, method, *args):
 
 
 def display_bin(func, method, *args):
-    x_dis = np.arange(func.ppf(0.0001),
-                      func.ppf(0.999))
+    x_dis = np.arange(func.ppf(0.00001),
+                      func.ppf(0.99999))
     color = ["other"] * len(x_dis)
     y_dis = func.cdf(x_dis)
     if method != "P(x1≤x≤x2)":
@@ -149,7 +149,7 @@ if distrib[0] == "P":
         if method != "P(x1≤x≤x2)":
             x = int(st.number_input(label="X",
                                     value=int(func.ppf(0.0001)),
-                                    min_value=int(func.ppf(0.0001)),
+                                    min_value=int(func.ppf(0.00001)),
                                     max_value=int(func.ppf(0.99999) - 1)
                                     )
                     )
@@ -157,7 +157,7 @@ if distrib[0] == "P":
         else:
             x1 = int(st.number_input(label="X1",
                                      value=int(func.ppf(0.0001)),
-                                     min_value=int(func.ppf(0.0001)),
+                                     min_value=int(func.ppf(0.00001)),
                                      max_value=int(func.ppf(0.99999) - 2)))
             x2 = int(st.number_input(label="X2",
                                      value=int(func.ppf(0.9999) - 1),
