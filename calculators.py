@@ -149,7 +149,7 @@ if distrib[0] == "P":
         if method != "P(x1≤x≤x2)":
             x = int(st.number_input(label="X",
                                     value=int(func.ppf(0.0001)),
-                                    min_value=int(func.ppf(0.00001)),
+                                    min_value=int(func.ppf(0.0001)),
                                     max_value=int(func.ppf(0.99999) - 1)
                                     )
                     )
@@ -157,7 +157,7 @@ if distrib[0] == "P":
         else:
             x1 = int(st.number_input(label="X1",
                                      value=int(func.ppf(0.0001)),
-                                     min_value=int(func.ppf(0.00001)),
+                                     min_value=int(func.ppf(0.0001)),
                                      max_value=int(func.ppf(0.99999) - 2)))
             x2 = int(st.number_input(label="X2",
                                      value=int(func.ppf(0.9999) - 1),
@@ -201,7 +201,7 @@ if distrib[0] == "B":
         if method != "P(x1≤x≤x2)":
             x = int(st.number_input(label="X",
                                     value=int(func.ppf(0.0001)),
-                                    min_value=int(func.ppf(0.00001)),
+                                    min_value=int(func.ppf(0.0001)),
                                     max_value=int(func.ppf(0.99999) - 1)
                                     )
                     )
@@ -209,7 +209,7 @@ if distrib[0] == "B":
         else:
             x1 = int(st.number_input(label="X1",
                                      value=int(func.ppf(0.0001)),
-                                     min_value=int(func.ppf(0.00001)),
+                                     min_value=int(func.ppf(0.0001)),
                                      max_value=int(func.ppf(0.99999) - 2)))
             x2 = int(st.number_input(label="X2",
                                      value=int(func.ppf(0.999) - 1),
