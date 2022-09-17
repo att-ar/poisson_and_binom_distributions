@@ -173,23 +173,13 @@ if distrib[0] == "P":
         display_pois(func, method, x)
         # check accuracy of cumulative distrib function and percent point function
         prob = func.cdf(x)
-        assert np.allclose(x, func.ppf(prob)), "cdf and ppf are note accurate"
+        assert np.allclose(x, func.ppf(prob)), "cdf and ppf are not accurate"
     else:
         display_pois(func, method, x1, x2)
         # check accuracy of cumulative distrib function and percent point function
         prob = func.cdf(x1)
-        assert np.allclose(x1, func.ppf(prob)), "cdf and ppf are note accurate"
+        assert np.allclose(x1, func.ppf(prob)), "cdf and ppf are not accurate"
 
-    if method == "P(X=x)":
-        chance = func.pmf(x)
-    elif method == "P(X≥x)":
-        chance = func.cdf(x)
-    elif method == "P(X≤x)":
-        chance = 1 - func.cdf(x-1)
-    elif method == "P(x1≤x≤x2)":
-        chance = func.cdf(x2) - func.cdf(x1 - 1)
-    with cols[1]:
-        st.header(f"{method} = {round(chance, 9)}")
 
 if distrib[0] == "B":
     with cols[0]:
@@ -223,20 +213,20 @@ if distrib[0] == "B":
         display_bin(func, method, x)
         # check accuracy of cumulative distrib function and percent point function
         prob = func.cdf(x)
-        assert np.allclose(x, func.ppf(prob)), "cdf and ppf are note accurate"
+        assert np.allclose(x, func.ppf(prob)), "cdf and ppf are not accurate"
     else:
         display_bin(func, method, x1, x2)
         # check accuracy of cumulative distrib function and percent point function
         prob = func.cdf(x1)
-        assert np.allclose(x1, func.ppf(prob)), "cdf and ppf are note accurate"
+        assert np.allclose(x1, func.ppf(prob)), "cdf and ppf are not accurate"
 
-    if method == "P(X=x)":
-        chance = func.pmf(x)
-    elif method == "P(X≥x)":
-        chance = func.cdf(x)
-    elif method == "P(X≤x)":
-        chance = 1 - func.cdf(x-1)
-    elif method == "P(x1≤x≤x2)":
-        chance = func.cdf(x2) - func.cdf(x1 - 1)
-    with cols[1]:
-        st.header(f"{method} = {round(chance, 9)}")
+if method == "P(X=x)":
+    chance = func.pmf(x)
+elif method == "P(X≥x)":
+    chance = func.cdf(x)
+elif method == "P(X≤x)":
+    chance = 1 - func.cdf(x-1)
+elif method == "P(x1≤x≤x2)":
+    chance = func.cdf(x2) - func.cdf(x1 - 1)
+with cols[1]:
+    st.header(f"{method} = {round(chance, 9)}")
