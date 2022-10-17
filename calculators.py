@@ -16,10 +16,10 @@ with header:
         method = st.selectbox("Select:",
                               ("P(X=x)", "P(X≥x)", "P(X≤x)", "P(x1≤X≤x2)"))
 
-def check_acc(func, *args):
+def check_acc(func, x):
     "Checks the accuracy of the distribution functions"
-    prob = func.cdf(args[0])
-    assert np.allclose(args[0], func.ppf(prob)), "cdf and ppf are not accurate"
+    prob = func.cdf(x)
+    assert np.allclose(x, func.ppf(prob)), "cdf and ppf are not accurate"
 
 def create_color(method, x_dis, *args):
     '''Helper function that changes the color of the graphs according to the X inputs'''
@@ -220,13 +220,11 @@ if distrib[0] == "B":
     if method != "P(x1≤X≤x2)":
         display_bin(func, method, x)
         # check accuracy of cumulative distrib function and percent point function
-        prob = func.cdf(x)
-        assert np.allclose(x, func.ppf(prob)), "cdf and ppf are note accurate"
+        check_acc(func, x)
     else:
         display_bin(func, method, x1, x2)
         # check accuracy of cumulative distrib function and percent point function
-        prob = func.cdf(x1)
-        assert np.allclose(x1, func.ppf(prob)), "cdf and ppf are note accurate"
+        check_acc(func, x1)
 
     methods_result = {"P(X=x)": func.pmf(x),
                     "P(X≥x)": 1 - func.cdf(x),
